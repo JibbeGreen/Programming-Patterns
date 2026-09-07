@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Patterns.SOAP
+namespace Patterns
 {
     [CreateAssetMenu(menuName = "Variables/Float Variable")]
     public class FloatVariable : RuntimeScriptableObject 

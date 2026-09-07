@@ -1,4 +1,4 @@
-﻿namespace Patterns.StateMachine 
+﻿namespace Patterns 
 {
     public interface IState {
         void OnEnter(IState from = null) { }

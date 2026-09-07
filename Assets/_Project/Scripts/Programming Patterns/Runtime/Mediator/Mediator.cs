@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Patterns.Visitor;
+using Patterns;
 using UnityEngine;
 using UnityUtils;
 
-namespace Patterns.Mediator
+namespace Patterns
 {
     public abstract class Mediator<T> : MonoBehaviour where T : Component, IVisitable
     {

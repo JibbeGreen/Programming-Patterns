@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 
-namespace Patterns.EventBus
+namespace Patterns
 {
     /// <summary>
     /// Contains methods and properties related to event buses and event types in the Unity application.

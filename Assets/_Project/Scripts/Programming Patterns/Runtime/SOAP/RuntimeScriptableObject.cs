@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Patterns.SOAP
+namespace Patterns
 {
     public abstract class RuntimeScriptableObject : ScriptableObject
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityUtils;
 
-namespace Patterns.ServiceLocator 
+namespace Patterns 
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(ServiceLocator))]

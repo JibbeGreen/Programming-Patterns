@@ -1,6 +1,6 @@
 {
     "name": "Patterns.EventBus",
-    "rootNamespace": "Patterns.EventBus",
+    "rootNamespace": "Patterns",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

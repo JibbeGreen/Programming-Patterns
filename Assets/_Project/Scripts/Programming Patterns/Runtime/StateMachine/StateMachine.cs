@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Patterns.StateMachine 
+namespace Patterns 
 {
     public class StateMachine {
         StateNode currentNode;

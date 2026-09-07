@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Patterns.StateMachine {
+namespace Patterns {
     public interface IPredicate {
         bool Evaluate();
     }

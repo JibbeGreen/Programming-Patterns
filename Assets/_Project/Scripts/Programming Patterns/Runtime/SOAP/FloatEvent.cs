@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Patterns.SOAP
+namespace Patterns
 {
 [CreateAssetMenu(menuName = "Events/Float Event")]
 public class FloatEvent : GameEvent<float>

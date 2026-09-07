@@ -6,7 +6,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityUtils;
 
-namespace Patterns.ServiceLocator {
+namespace Patterns 
+{
     public class ServiceLocator : MonoBehaviour
     {
         static ServiceLocator global;

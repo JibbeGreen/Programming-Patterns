@@ -1,6 +1,6 @@
 {
     "name": "Patterns.SOAP",
-    "rootNamespace": "Patterns.SOAP",
+    "rootNamespace": "Patterns",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

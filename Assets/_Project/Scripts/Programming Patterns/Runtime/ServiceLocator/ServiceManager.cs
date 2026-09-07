@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Patterns.ServiceLocator {
+namespace Patterns {
     public class ServiceManager
     {
         readonly Dictionary<Type, object> services = new Dictionary<Type, object>();

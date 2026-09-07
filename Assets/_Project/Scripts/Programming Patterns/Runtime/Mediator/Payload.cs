@@ -1,7 +1,7 @@
 using UnityEngine;
-using Patterns.Visitor;
+using Patterns;
 
-namespace Patterns.Mediator
+namespace Patterns
 {
     public abstract class Payload<TData> : IVisitor
     {

@@ -1,6 +1,6 @@
 {
     "name": "Patterns.Command",
-    "rootNamespace": "Patterns.Command",
+    "rootNamespace": "Patterns",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

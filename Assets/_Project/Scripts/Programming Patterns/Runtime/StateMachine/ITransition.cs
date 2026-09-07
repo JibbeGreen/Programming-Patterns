@@ -1,4 +1,4 @@
-﻿namespace Patterns.StateMachine {
+﻿namespace Patterns {
     public interface ITransition {
         IState To { get; }
         IPredicate Condition { get; }

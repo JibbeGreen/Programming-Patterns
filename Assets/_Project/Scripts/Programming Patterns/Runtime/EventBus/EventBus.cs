@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Patterns.EventBus
+namespace Patterns
 {
     public static class EventBus<T> where T : IEvent 
     {

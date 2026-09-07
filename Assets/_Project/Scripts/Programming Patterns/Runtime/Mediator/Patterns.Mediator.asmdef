@@ -1,6 +1,6 @@
 {
     "name": "Patterns.Mediator",
-    "rootNamespace": "Patterns.Mediator",
+    "rootNamespace": "Patterns",
     "references": [
         "GUID:33d8ea9a42aad514688d0dcbe7f42f9c",
         "GUID:3fdfe6dde2c72ef439fd6cb6d5dca5c8"

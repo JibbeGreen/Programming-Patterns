@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Patterns.EventBus
+namespace Patterns
 {
     public interface IEventBinding<T> {
         public Action<T> OnEvent { get; set; }

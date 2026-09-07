@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using CanTarget = Patterns.Combinator.And<Patterns.Combinator.And<Patterns.Combinator.InRange, Patterns.Combinator.IsAlive>, Patterns.Combinator.LineOfSight>;
+using CanTarget = Patterns.And<Patterns.And<Patterns.InRange, Patterns.IsAlive>, Patterns.LineOfSight>;
 
-namespace Patterns.Combinator
+namespace Patterns
 {
     // ---------- Domain ----------
     class Health : MonoBehaviour {

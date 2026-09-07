@@ -1,6 +1,6 @@
 {
     "name": "Patterns.ServiceLocator",
-    "rootNamespace": "Patterns.ServiceLocator",
+    "rootNamespace": "Patterns",
     "references": [
         "GUID:3fdfe6dde2c72ef439fd6cb6d5dca5c8"
     ],

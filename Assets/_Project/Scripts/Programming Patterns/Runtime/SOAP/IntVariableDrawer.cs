@@ -2,7 +2,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using UnityEditor;
 
-namespace Patterns.SOAP.Editor
+namespace Patterns.Editor
 {
     [CustomPropertyDrawer(typeof(IntVariable))]
     public class IntVariableDrawer : PropertyDrawer 

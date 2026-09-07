@@ -1,6 +1,6 @@
 {
     "name": "Patterns.Visitor",
-    "rootNamespace": "Patterns.Visitor",
+    "rootNamespace": "Patterns",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
