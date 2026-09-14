@@ -58,7 +58,7 @@ namespace Patterns
             {
                 if (global != null) return global;
 
-                if (FindFirstObjectByType<ServiceLocatorGlobal>() is { } found)
+                if (FindAnyObjectByType<ServiceLocatorGlobal>() is { } found)
                 {
                     found.BootstrapOnDemand();
                     return global;

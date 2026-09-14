@@ -1,6 +1,5 @@
 using System.Collections. Generic;
 using UnityEngine;
-using UnityEngine. Events;
 
 namespace Patterns
 {
@@ -12,7 +11,7 @@ namespace Patterns
         {
             for (var i = listeners.Count - 1; i >= 0; i -- ) 
             {
-                listeners[i]. OnEventRaised(data);
+                listeners[i].OnEventRaised(data);
             }
         }
 
