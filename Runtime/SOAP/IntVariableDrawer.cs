@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using UnityEditor;
@@ -50,3 +51,4 @@ namespace Patterns.Editor
         }
     }
 }
+#endif
