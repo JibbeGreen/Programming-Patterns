@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Patterns
 {
-    [CreateAssetMenu(menuName = "Variables/Bool Variable")]
+    [CreateAssetMenu(menuName = "SOAP/Variables/Bool")]
     public class BoolVariable : RuntimeScriptableObject 
     {
         [SerializeField] bool initialValue;

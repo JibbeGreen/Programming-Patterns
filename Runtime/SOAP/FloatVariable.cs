@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Patterns
 {
-    [CreateAssetMenu(menuName = "Variables/Float Variable")]
+    [CreateAssetMenu(menuName = "SOAP/Variables/Float")]
     public class FloatVariable : RuntimeScriptableObject 
     {
         [SerializeField] float initialValue;

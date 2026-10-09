@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using Unity.Scripting.LifecycleManagement;
 using UnityEngine;
 
 namespace Patterns
 {
-    public abstract class RuntimeScriptableObject : ScriptableObject
+    [AutoStaticsCleanup]
+    public abstract partial class RuntimeScriptableObject : ScriptableObject
     {
         static readonly List<RuntimeScriptableObject> Instances = new();
 

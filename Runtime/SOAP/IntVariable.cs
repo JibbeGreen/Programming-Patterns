@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Patterns
 {
-    [CreateAssetMenu(menuName = "Variables/Int Variable")]
+    [CreateAssetMenu(menuName = "SOAP/Variables/Int")]
     public class IntVariable : RuntimeScriptableObject 
     {
         [SerializeField] int initialValue;

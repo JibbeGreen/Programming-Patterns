@@ -19,7 +19,7 @@ namespace Patterns
         public void DeregisterListener(IGameEventListener<T> listener) => listeners.Remove(listener);
     }
 
-    [CreateAssetMenu(menuName = "Events/Game Event")]
+    [CreateAssetMenu(menuName = "SOAP/Events/Game Event")]
     public class GameEvent : GameEvent<Unit> 
     {
         public void Raise() => Raise(Unit.Default);
