@@ -1,27 +1,11 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Patterns
 {
     [CreateAssetMenu(menuName = "SOAP/Variables/Float")]
-    public class FloatVariable : RuntimeScriptableObject 
+    public class FloatVariable : ScriptableVariable<float>
     {
-        [SerializeField] float initialValue;
-        [SerializeField] float value;
-
-        public event UnityAction<float> OnValueChanged = delegate { };
-
-        public float Value 
-        {
-            get => value;
-            set 
-            {
-                if (Mathf.Approximately(this.value, value)) return;
-                this.value = value;
-                OnValueChanged.Invoke(value);
-            }
-        }
-
-        protected override void OnReset() => value = initialValue;
+        protected override bool AreEqual(float a, float b) => Mathf.Approximately(a, b);
     }
+
 }
