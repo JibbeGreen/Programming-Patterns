@@ -24,28 +24,31 @@ namespace Patterns.Editor
             container.Add(objectField);
             container.Add(valueLabel);
 
-            objectField.RegisterValueChangedCallback(
-                evt => 
-                {
-                    var variable = evt.newValue as IntVariable;
-                    if (variable != null) 
-                    {
-                        valueLabel.text = $"Current Value: {variable. Value}";
-                        variable. OnValueChanged += newValue => valueLabel.text = $"Current Value: {newValue}";
-                    } 
-                    else 
-                    {
-                        valueLabel.text = string.Empty;
-                    }
-                }
-            );
+            IntVariable watched = null;
+            void OnChanged(int newValue) => valueLabel.text = $"Current Value: {newValue}";
 
-            var currentVariable = property.objectReferenceValue as IntVariable;
-            if (currentVariable != null) 
+            // Keeps exactly one subscription, on the currently assigned variable.
+            void Watch(IntVariable variable)
             {
-                valueLabel.text = $"Current Value: {currentVariable. Value}";
-                currentVariable. OnValueChanged += newValue => valueLabel. text = $"Current Value: {newValue}";
+                if (watched != null) watched.OnValueChanged -= OnChanged;
+                watched = variable;
+
+                if (watched != null)
+                {
+                    valueLabel.text = $"Current Value: {watched.Value}";
+                    watched.OnValueChanged += OnChanged;
+                }
+                else
+                {
+                    valueLabel.text = string.Empty;
+                }
             }
+
+            objectField.RegisterValueChangedCallback(evt => Watch(evt.newValue as IntVariable));
+            // Unsubscribe when the inspector goes away so handlers don't pile up on the asset.
+            container.RegisterCallback<DetachFromPanelEvent>(_ => Watch(null));
+
+            Watch(property.objectReferenceValue as IntVariable);
 
             return container;
         }

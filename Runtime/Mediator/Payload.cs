@@ -19,7 +19,7 @@ namespace Patterns
 
         public override void Visit<T>(T p_visitable)
         {
-            Debug.Log($"{p_visitable.name} received message from {Source.name}: {Content}");
+            Debug.Log($"{p_visitable.name} received message from {(Source != null ? Source.name : "<none>")}: {Content}");
         }
 
         public class Builder

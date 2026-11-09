@@ -41,13 +41,21 @@ namespace Patterns
 
         public void Message(T source, T target, IVisitor message)
         {
-            entities.FirstOrDefault(entity => entity.Equals(target))?.Accept(message);
+            var entity = entities.FirstOrDefault(e => e.Equals(target));
+            if (entity != null) entity.Accept(message); // Unity null check (skips destroyed entities)
         }
 
         public void Broadcast(T source, IVisitor message, Func<T, bool> predicate = null)
         {
-            entities.Where(target => source != target && SenderConditionMet(target, predicate) && MediatorConditionMet(target))
-                    .ForEach(entity => entity.Accept(message));
+            // Snapshot first: a visitor may cause Register/Deregister while we dispatch.
+            var targets = entities
+                .Where(target => target != null && source != target && SenderConditionMet(target, predicate) && MediatorConditionMet(target))
+                .ToList();
+
+            foreach (var entity in targets)
+            {
+                if (entity != null) entity.Accept(message);
+            }
         }
 
         bool SenderConditionMet(T target, Func<T, bool> predicate) => predicate == null || predicate(target);

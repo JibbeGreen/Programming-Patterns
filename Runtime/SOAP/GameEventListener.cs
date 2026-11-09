@@ -13,8 +13,16 @@ namespace Patterns
         [SerializeField] GameEvent<T> gameEvent;
         [SerializeField] UnityEvent<T> response;
 
-        void OnEnable() => gameEvent.RegisterListener(this);
-        void OnDisable() => gameEvent.DeregisterListener(this);
+        void OnEnable()
+        {
+            if (gameEvent != null) gameEvent.RegisterListener(this);
+            else Debug.LogWarning($"{name}: GameEventListener has no GameEvent assigned.", this);
+        }
+
+        void OnDisable()
+        {
+            if (gameEvent != null) gameEvent.DeregisterListener(this);
+        }
 
         public void OnEventRaised(T data) => response.Invoke(data);
     }

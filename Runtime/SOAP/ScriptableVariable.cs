@@ -24,6 +24,11 @@ namespace Patterns
 
         /// <summary>Override when plain equality isn't right (floats).</summary>
         protected virtual bool AreEqual(T a, T b) => EqualityComparer<T>.Default.Equals(a, b);
-        protected override void OnReset() => value = initialValue;
+        protected override void OnReset()
+        {
+            value = initialValue;
+            // Drop subscribers left over from a previous play session (domain reload disabled).
+            OnValueChanged = delegate { };
+        }
     }
 }

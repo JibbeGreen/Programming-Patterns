@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 //using ZLinq;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityUtils;
@@ -13,6 +15,7 @@ namespace Patterns
         static ServiceLocator global;
         static Dictionary<Scene, ServiceLocator> sceneContainers;
         static List<GameObject> tmpSceneGameObjects;
+        static bool isQuitting;
 
         readonly ServiceManager services = new();
 
@@ -57,6 +60,7 @@ namespace Patterns
             get
             {
                 if (global != null) return global;
+                if (isQuitting) return null; // don't recreate a global locator during application teardown
 
                 if (FindAnyObjectByType<ServiceLocatorGlobal>() is { } found)
                 {
@@ -86,14 +90,15 @@ namespace Patterns
             tmpSceneGameObjects.Clear();
             scene.GetRootGameObjects(tmpSceneGameObjects);
 
-            // foreach (GameObject go in tmpSceneGameObjects.AsValueEnumerable().Where(go => go.GetComponent<ServiceLocatorScene>() != null))
-            // {
-            //     if (go.TryGetComponent(out ServiceLocatorScene bootstrapper) && bootstrapper.Container != mb)
-            //     {
-            //         bootstrapper.BootstrapOnDemand();
-            //         return bootstrapper.Container;
-            //     }
-            // }
+            // Bootstrap a scene locator whose Awake hasn't run yet, so resolution doesn't depend on Awake order.
+            foreach (GameObject go in tmpSceneGameObjects)
+            {
+                if (go.TryGetComponent(out ServiceLocatorScene bootstrapper) && bootstrapper.Container != mb)
+                {
+                    bootstrapper.BootstrapOnDemand();
+                    return bootstrapper.Container;
+                }
+            }
 
             return Global;
         }
@@ -130,6 +135,17 @@ namespace Patterns
             services.Register(type, service);
             return this;
         }
+
+        /// <summary>
+        /// Removes the service registered under type T. Returns true if one was registered.
+        /// Call this when a registered service is destroyed so the locator doesn't hold a stale reference.
+        /// </summary>
+        public bool Unregister<T>() => services.Unregister(typeof(T));
+
+        /// <summary>
+        /// Removes the service registered under the given type. Returns true if one was registered.
+        /// </summary>
+        public bool Unregister(Type type) => services.Unregister(type);
 
         /// <summary>
         /// Gets a service of a specific type. If no service of the required type is found, an error is thrown.
@@ -226,8 +242,16 @@ namespace Patterns
         static void ResetStatics()
         {
             global = null;
+            isQuitting = false;
             sceneContainers = new Dictionary<Scene, ServiceLocator>();
             tmpSceneGameObjects = new List<GameObject>();
+            Application.quitting -= OnQuitting;
+            Application.quitting += OnQuitting;
+        }
+
+        static void OnQuitting()
+        {
+            isQuitting = true;
         }
 
 #if UNITY_EDITOR

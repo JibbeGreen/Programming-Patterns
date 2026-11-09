@@ -6,12 +6,14 @@ namespace Patterns
 {
     public class StateMachine {
         StateNode currentNode;
-        readonly Dictionary<Type, StateNode> nodes = new();
+        readonly Dictionary<IState, StateNode> nodes = new(); // keyed by instance so two states of the same class stay distinct
         readonly HashSet<Transition> anyTransitions = new();
         
-        public IState CurrentState => currentNode.State;
+        public IState CurrentState => currentNode?.State;
 
         public void Update() {
+            if (currentNode == null) return;
+
             var transition = GetTransition();
 
             if (transition != null) {
@@ -32,14 +34,18 @@ namespace Patterns
         }
         
         public void FixedUpdate() {
-            currentNode.State?.FixedUpdate();
+            currentNode?.State?.FixedUpdate();
         }
 
         public void SetState(IState state)
         {
             var node = GetOrAddNode(state);
+            var previousState = currentNode?.State;
+            if (previousState == node.State) return;
+
+            previousState?.OnExit();
             currentNode = node;
-            node.State?.OnEnter(null);
+            node.State?.OnEnter(previousState);
         }
 
         void ChangeState(IState state) {
@@ -47,11 +53,11 @@ namespace Patterns
                 return;
 
             var previousState = currentNode.State;
-            var nextState = nodes[state.GetType()].State;
+            var nextNode = GetOrAddNode(state);
 
             previousState?.OnExit();
-            nextState.OnEnter(previousState);
-            currentNode = nodes[state.GetType()];
+            nextNode.State.OnEnter(previousState);
+            currentNode = nextNode;
         }
 
         public void AddTransition<T>(IState from, IState to, T condition) {
@@ -63,8 +69,9 @@ namespace Patterns
         }
 
         Transition GetTransition() {
+            // An any-transition into the current state is a no-op; don't let it shadow this state's own transitions.
             foreach (var transition in anyTransitions)
-                if (transition.Evaluate())
+                if (transition.To != currentNode.State && transition.Evaluate())
                     return transition;
 
             foreach (var transition in currentNode.Transitions) {
@@ -76,10 +83,10 @@ namespace Patterns
         }
 
         StateNode GetOrAddNode(IState state) {
-            var node = nodes.GetValueOrDefault(state.GetType());
+            var node = nodes.GetValueOrDefault(state);
             if (node == null) {
                 node = new StateNode(state);
-                nodes[state.GetType()] = node;
+                nodes[state] = node;
             }
 
             return node;

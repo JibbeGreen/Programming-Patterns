@@ -44,6 +44,8 @@ namespace Patterns {
             return this;
         }
 
+        public bool Unregister(Type type) => services.Remove(type);
+
         public ServiceManager Register(Type type, object service)
         {
             if (!type.IsInstanceOfType(service))

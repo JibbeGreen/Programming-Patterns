@@ -45,7 +45,7 @@ namespace Patterns
             if (assemblyTypes == null) return;
             for (int i = 0; i < assemblyTypes.Length; i++) {
                 Type type = assemblyTypes[i];
-                if (type != interfaceType && interfaceType.IsAssignableFrom(type)) {
+                if (type != interfaceType && !type.ContainsGenericParameters && interfaceType.IsAssignableFrom(type)) {
                     results.Add(type);
                 }
             }
@@ -59,20 +59,34 @@ namespace Patterns
         public static List<Type> GetTypes(Type interfaceType) {
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             
-            Dictionary<AssemblyType, Type[]> assemblyTypes = new Dictionary<AssemblyType, Type[]>();
+            // Scan Assembly-CSharp(-firstpass) AND every asmdef assembly that references the interface's
+            // assembly. Previously only the predefined assemblies were scanned, so event types living in
+            // packages were never cleared on exiting Play Mode.
+            Assembly interfaceAssembly = interfaceType.Assembly;
+            string interfaceAssemblyName = interfaceAssembly.GetName().Name;
+
             List<Type> types = new List<Type>();
             for (int i = 0; i < assemblies.Length; i++) {
-                AssemblyType? assemblyType = GetAssemblyType(assemblies[i].GetName().Name);
-                if (assemblyType != null) {
-                    assemblyTypes.Add((AssemblyType) assemblyType, assemblies[i].GetTypes());
+                Assembly assembly = assemblies[i];
+                if (assembly.IsDynamic) continue;
+
+                AssemblyType? predefined = GetAssemblyType(assembly.GetName().Name);
+                if (predefined == AssemblyType.AssemblyCSharpEditor || predefined == AssemblyType.AssemblyCSharpEditorFirstPass) continue;
+
+                bool relevant = assembly == interfaceAssembly
+                                || predefined != null
+                                || Array.Exists(assembly.GetReferencedAssemblies(), a => a.Name == interfaceAssemblyName);
+                if (!relevant) continue;
+
+                Type[] assemblyTypes;
+                try {
+                    assemblyTypes = assembly.GetTypes();
+                } catch (ReflectionTypeLoadException e) {
+                    assemblyTypes = Array.FindAll(e.Types, t => t != null);
                 }
+                AddTypesFromAssembly(assemblyTypes, interfaceType, types);
             }
             
-            assemblyTypes.TryGetValue(AssemblyType.AssemblyCSharp, out var assemblyCSharpTypes);
-            AddTypesFromAssembly(assemblyCSharpTypes, interfaceType, types);
-
-            assemblyTypes.TryGetValue(AssemblyType.AssemblyCSharpFirstPass, out var assemblyCSharpFirstPassTypes);
-            AddTypesFromAssembly(assemblyCSharpFirstPassTypes, interfaceType, types);
             
             return types;
         }

@@ -1,4 +1,4 @@
-using System.Collections. Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Patterns
@@ -11,6 +11,8 @@ namespace Patterns
         {
             for (var i = listeners.Count - 1; i >= 0; i -- ) 
             {
+                // Bounds/membership check: a listener may (de)register other listeners during dispatch.
+                if (i >= listeners.Count) continue;
                 listeners[i].OnEventRaised(data);
             }
         }

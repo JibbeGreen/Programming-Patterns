@@ -10,10 +10,8 @@ using UnityEditor;
 
 namespace Patterns
 {
-    /// <summary>
-    /// Contains methods and properties related to event buses and event types in the Unity application.
-    /// </summary>
-    public static class EventBusUtil {
+   [Unity.Scripting.LifecycleManagement.AutoStaticsCleanup]
+    public static partial class EventBusUtil {
         public static IReadOnlyList<Type> EventTypes { get; set; }
         public static IReadOnlyList<Type> EventBusTypes { get; set; }
         
@@ -74,6 +72,7 @@ namespace Patterns
         /// </summary>
         public static void ClearAllBuses() {
             Debug.Log("Clearing all buses...");
+            if (EventBusTypes == null) return;
             for (int i = 0; i < EventBusTypes.Count; i++) {
                 var busType = EventBusTypes[i];
                 var clearMethod = busType.GetMethod("Clear", BindingFlags.Static | BindingFlags.NonPublic);

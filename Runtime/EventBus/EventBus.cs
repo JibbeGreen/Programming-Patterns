@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace Patterns
 {
-    public static class EventBus<T> where T : IEvent 
+    [Unity.Scripting.LifecycleManagement.AutoStaticsCleanup]
+    public static partial class EventBus<T> where T : IEvent 
     {
         static readonly HashSet<IEventBinding<T>> bindings = new HashSet<IEventBinding<T>>();
         

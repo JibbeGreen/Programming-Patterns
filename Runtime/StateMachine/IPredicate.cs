@@ -7,18 +7,27 @@ namespace Patterns {
         bool Evaluate();
     }
 
+    [System.Serializable]
     public class And : IPredicate {
-        [SerializeField] List<IPredicate> rules = new List<IPredicate>();
-        public bool Evaluate() => rules.All(r => r.Evaluate());
+        [SerializeReference] List<IPredicate> rules = new List<IPredicate>();
+        public And() { }
+        public And(params IPredicate[] rules) => this.rules = new List<IPredicate>(rules);
+        public bool Evaluate() => rules.All(r => r != null && r.Evaluate());
     }
 
+    [System.Serializable]
     public class Or : IPredicate {
-        [SerializeField] List<IPredicate> rules = new List<IPredicate>();
-        public bool Evaluate() => rules.Any(r => r.Evaluate());
+        [SerializeReference] List<IPredicate> rules = new List<IPredicate>();
+        public Or() { }
+        public Or(params IPredicate[] rules) => this.rules = new List<IPredicate>(rules);
+        public bool Evaluate() => rules.Any(r => r != null && r.Evaluate());
     }
 
+    [System.Serializable]
     public class Not : IPredicate {
-        [SerializeField] IPredicate rule;
-        public bool Evaluate() => !rule.Evaluate();
+        [SerializeReference] IPredicate rule;
+        public Not() { }
+        public Not(IPredicate rule) => this.rule = rule;
+        public bool Evaluate() => rule != null && !rule.Evaluate();
     }
 }
